@@ -37,6 +37,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "eslint": "^7.18.0"
+    "eslint": "^7.18.0",
+    "eslint-plugin-json": "^2.1.2"
   }
 }
