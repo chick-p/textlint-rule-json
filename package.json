@@ -38,6 +38,7 @@
   "description": "",
   "dependencies": {
     "eslint": "^7.18.0",
-    "eslint-plugin-json": "^2.1.2"
+    "eslint-plugin-json": "^2.1.2",
+    "structured-source": "^3.0.2"
   }
 }
