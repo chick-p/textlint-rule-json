@@ -4,41 +4,39 @@ const tester = new TextLintTester();
 // ruleName, rule, { valid, invalid }
 tester.run("rule", rule, {
   valid: [
-    // no problem
-    "text",
     {
-      text: "It is bugs, but it should be ignored",
-      options: {
-        allows: ["it should be ignored"],
-      },
+      text: "```json\n" + '{ "foo": "bar" }\n' + "```",
     },
   ],
   invalid: [
-    // single match
     {
-      text: "It is bugs.",
+      text: "```json\n" + '{ "foo": bar }\n' + "```",
       errors: [
         {
-          message: "Found bugs.",
-          line: 1,
-          column: 7,
+          message: "Value expected",
+          line: 2,
+          column: 11,
         },
       ],
     },
-    // multiple match
     {
-      text: `It has many bugs.
-
-One more bugs`,
+      text:
+        "```json\n" +
+        '{ "foo": bar }\n' +
+        "```\n" +
+        "This is text.\n" +
+        "```json\n" +
+        '{ "foo" }\n' +
+        "```",
       errors: [
         {
-          message: "Found bugs.",
-          line: 1,
-          column: 13,
+          message: "Value expected",
+          line: 2,
+          column: 11,
         },
         {
-          message: "Found bugs.",
-          line: 3,
+          message: "Colon expected",
+          line: 6,
           column: 10,
         },
       ],
