@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "keywords": [
+    "textlintrule"
+  ],
+  "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "src/"
+  ],
+  "scripts": {
+    "test": "textlint-scripts test",
+    "build": "textlint-scripts build",
+    "prepublish": "npm run --if-present build",
+    "watch": "textlint-scripts build --watch"
+  },
+  "devDependencies": {
+    "@textlint/types": "^1.4.6",
+    "@types/node": "^12.19.14",
+    "textlint-scripts": "^3.0.0",
+    "textlint-tester": "^5.2.7",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.6.4"
+  },
+  "name": "textlint-rule-jsonlint",
+  "directories": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
