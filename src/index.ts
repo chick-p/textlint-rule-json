@@ -1,30 +1,52 @@
 import { TextlintRuleModule } from "@textlint/types";
+import { TxtNode } from "@textlint/ast-node-types";
+import { ESLint } from "eslint";
+import Source from "structured-source";
 
-export interface Options {
-  // if the Str includes `allows` word, does not report it
-  allows?: string[];
+function excludeFenceCharacters(node: TxtNode, raw: string): string {
+  if (!(raw.startsWith("```") && raw.endsWith("```"))) {
+    if (node.value.endsWith("\n")) {
+      return node.value;
+    }
+    return node.value + "\n";
+  }
+  const lines = raw.split("\n");
+  // exclude fence characters
+  const codeLines = lines.slice(1, lines.length - 1);
+  return codeLines.join("\n") + "\n";
 }
 
-const report: TextlintRuleModule<Options> = (context, options = {}) => {
+const report: TextlintRuleModule = (context, _options = {}) => {
   const { Syntax, RuleError, report, getSource } = context;
-  const allows = options.allows || [];
   return {
-    [Syntax.Str](node) {
-      // "Str" node
-      const text = getSource(node); // Get text
-      const matches = /bugs/g.exec(text); // Found "bugs"
-      if (!matches) {
+    async [Syntax.CodeBlock](node) {
+      if ("json".indexOf(node.lang) === -1) {
         return;
       }
-      const isIgnored = allows.some((allow) => text.includes(allow));
-      if (isIgnored) {
-        return;
-      }
-      const indexOfBugs = matches.index;
-      const ruleError = new RuleError("Found bugs.", {
-        index: indexOfBugs, // padding of index
+      const raw = getSource(node);
+      const code = excludeFenceCharacters(node, raw);
+      const eslint = new ESLint({
+        baseConfig: { extends: ["plugin:json/recommended"] },
+        fix: true,
       });
-      report(node, ruleError);
+      const source = new Source(code);
+      const results = await eslint.lintText(code, { filePath: "*.json" });
+      results.forEach((result) => {
+        result.messages.forEach((message) => {
+          const sourceBlockDiffIndex =
+            raw !== node.value ? raw.indexOf(code) : 0;
+          const index = source.positionToIndex({
+            line: message.line,
+            column: message.column,
+          });
+          report(
+            node,
+            new RuleError(`${message.message}`, {
+              index: index + sourceBlockDiffIndex - 1,
+            })
+          );
+        });
+      });
     },
   };
 };
