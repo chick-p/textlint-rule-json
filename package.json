@@ -17,6 +17,7 @@
   "devDependencies": {
     "@textlint/ast-node-types": "^4.3.5",
     "@textlint/types": "^1.4.6",
+    "@types/eslint": "^7.2.6",
     "@types/node": "^12.19.14",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
