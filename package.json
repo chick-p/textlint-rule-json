@@ -15,6 +15,7 @@
     "watch": "textlint-scripts build --watch"
   },
   "devDependencies": {
+    "@textlint/ast-node-types": "^4.3.5",
     "@textlint/types": "^1.4.6",
     "@types/node": "^12.19.14",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
