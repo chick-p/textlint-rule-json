@@ -57,5 +57,16 @@ tester.run("rule", rule, {
         },
       ],
     },
+    {
+      text: "```json\n" + "{\n" + '"foo": "bar"\n' + "}\n" + "```",
+      output: "```json\n{\n" + '  "foo": "bar"\n' + "}\n" + "```",
+      errors: [
+        {
+          message: "Format error",
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
