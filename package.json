@@ -36,7 +36,7 @@
     "test": "test"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "dependencies": {
     "eslint": "^7.18.0",
