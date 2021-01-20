@@ -28,6 +28,24 @@ Via CLI
 textlint --rule jsonlint README.md
 ```
 
+## Options
+
+Please write your configurations in `.textlintrc`.
+
+```json
+{
+  "rules": {
+    "jsonlint": {
+      "allowComments": true,
+    }
+  }
+}
+```
+
+### allowComments
+
+This rule is ignore errors cause by comments. The default value is `false`.
+
 ## License
 
 MIT © chick-p

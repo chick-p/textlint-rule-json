@@ -2,6 +2,13 @@ import { TextlintRuleModule } from "@textlint/types";
 import { TxtNode } from "@textlint/ast-node-types";
 import { ESLint } from "eslint";
 import Source from "structured-source";
+export interface Options {
+  allowComments?: boolean;
+}
+
+const defaultOptions: Options = {
+  allowComments: false,
+};
 
 function excludeFenceCharacters(node: TxtNode, raw: string): string {
   if (!(raw.startsWith("```") && raw.endsWith("```"))) {
@@ -16,7 +23,7 @@ function excludeFenceCharacters(node: TxtNode, raw: string): string {
   return codeLines.join("\n") + "\n";
 }
 
-const report: TextlintRuleModule = (context, _options = {}) => {
+const report: TextlintRuleModule<Options> = (context, options = {}) => {
   const { Syntax, RuleError, report, getSource } = context;
   return {
     async [Syntax.CodeBlock](node) {
@@ -25,8 +32,13 @@ const report: TextlintRuleModule = (context, _options = {}) => {
       }
       const raw = getSource(node);
       const code = excludeFenceCharacters(node, raw);
+      const allowComments =
+        options.allowComments || defaultOptions.allowComments;
       const eslint = new ESLint({
-        baseConfig: { extends: ["plugin:json/recommended"] },
+        baseConfig: {
+          extends: ["plugin:json/recommended"],
+          rules: { "json/*": ["error", { allowComments }] },
+        },
         fix: true,
       });
       const source = new Source(code);
