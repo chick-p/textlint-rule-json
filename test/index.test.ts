@@ -7,6 +7,12 @@ tester.run("rule", rule, {
     {
       text: "```json\n" + '{ "foo": "bar" }\n' + "```",
     },
+    {
+      text: "```json\n" + "// comment\n" + '{ "foo": "bar" }\n' + "```",
+      options: {
+        allowComments: true,
+      },
+    },
   ],
   invalid: [
     {
@@ -38,6 +44,16 @@ tester.run("rule", rule, {
           message: "Colon expected",
           line: 6,
           column: 10,
+        },
+      ],
+    },
+    {
+      text: "```json\n" + "// comment\n" + '{ "foo": "bar" }\n' + "```",
+      errors: [
+        {
+          message: "Comment not allowed",
+          line: 2,
+          column: 2,
         },
       ],
     },
