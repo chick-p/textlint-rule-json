@@ -1,5 +1,7 @@
 # textlint-rule-jsonlint
 
+![](https://github.com/chick-p/textlint-rule-jsonlint/workflows/test/badge.svg?branch=master)
+
 textlint rule to lint codeblocks of json in Markdown with ESLint and prettier.
 
 ## Install
