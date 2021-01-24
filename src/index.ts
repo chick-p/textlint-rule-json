@@ -2,6 +2,7 @@ import { TextlintRuleModule } from "@textlint/types";
 import { TxtNode } from "@textlint/ast-node-types";
 import { ESLint } from "eslint";
 import Source from "structured-source";
+import prettier from "prettier";
 export interface Options {
   allowComments?: boolean;
 }
@@ -24,7 +25,7 @@ function excludeFenceCharacters(node: TxtNode, raw: string): string {
 }
 
 const report: TextlintRuleModule<Options> = (context, options = {}) => {
-  const { Syntax, RuleError, report, getSource } = context;
+  const { Syntax, RuleError, report, fixer, getSource } = context;
   return {
     async [Syntax.CodeBlock](node) {
       if ("json".indexOf(node.lang) === -1) {
@@ -44,22 +45,43 @@ const report: TextlintRuleModule<Options> = (context, options = {}) => {
       const source = new Source(code);
       const results = await eslint.lintText(code, { filePath: "*.json" });
       results.forEach((result) => {
-        result.messages.forEach((message) => {
-          const sourceBlockDiffIndex =
-            raw !== node.value ? raw.indexOf(code) : 0;
-          const index = source.positionToIndex({
-            line: message.line,
-            column: message.column,
+        if (result.errorCount > 0) {
+          result.messages.forEach((message) => {
+            const sourceBlockDiffIndex =
+              raw !== node.value ? raw.indexOf(code) : 0;
+            const index = source.positionToIndex({
+              line: message.line,
+              column: message.column,
+            });
+            report(
+              node,
+              new RuleError(`${message.message}`, {
+                index: index + sourceBlockDiffIndex - 1,
+              })
+            );
           });
-          report(
-            node,
-            new RuleError(`${message.message}`, {
-              index: index + sourceBlockDiffIndex - 1,
-            })
-          );
-        });
+        } else {
+          // It formats a correct code only.
+          // Because prettier raises an exception if a code has syntax errors
+          const formattedText = prettier.format(code, { parser: "json" });
+          if (code !== formattedText) {
+            report(
+              node,
+              new RuleError(`Format error`, {
+                fix: fixer.replaceText(
+                  node,
+                  "```json\n" + formattedText + "```"
+                ),
+              })
+            );
+          }
+        }
       });
     },
   };
 };
-export default report;
+
+export default {
+  linter: report,
+  fixer: report,
+};

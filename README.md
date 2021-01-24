@@ -30,6 +30,11 @@ Via CLI
 textlint --rule jsonlint README.md
 ```
 
+## Fixble
+
+`textlint-rule-json` supports `--fix` option.  
+The `--fix` options can format only JSON, but it does not fix wrong syntaxes.
+
 ## Options
 
 Please write your configurations in `.textlintrc`.
