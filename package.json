@@ -13,7 +13,8 @@
     "prepare": "npm run build",
     "build": "textlint-scripts build",
     "prepublish": "npm run --if-present build",
-    "watch": "textlint-scripts build --watch"
+    "watch": "textlint-scripts build --watch",
+    "lint": "eslint --ext *.ts"
   },
   "devDependencies": {
     "@textlint/ast-node-types": "^4.3.5",
