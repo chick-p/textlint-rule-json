@@ -32,7 +32,7 @@
     "ts-node": "^8.10.2",
     "typescript": "^3.6.4"
   },
-  "name": "textlint-rule-jsonlint",
+  "name": "textlint-rule-json",
   "directories": {
     "test": "test"
   },
