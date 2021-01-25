@@ -1,6 +1,6 @@
-# textlint-rule-jsonlint
+# textlint-rule-json
 
-![](https://github.com/chick-p/textlint-rule-jsonlint/workflows/test/badge.svg?branch=master)
+![](https://github.com/chick-p/textlint-rule-json/workflows/test/badge.svg?branch=master)
 
 A textlint rule to lint code blocks of JSON in Markdown with ESLint and prettier.
 
@@ -9,7 +9,7 @@ A textlint rule to lint code blocks of JSON in Markdown with ESLint and prettier
 Install with GitHub
 
 ```shell
-npm install https://github.com/chick-p/textlint-rule-jsonlint.git
+npm install https://github.com/chick-p/textlint-rule-json.git
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ Via `.textlintrc`(Recommended)
 ```json
 {
   "rules": {
-    "jsonlint": true
+    "json": true
   }
 }
 ```
@@ -27,7 +27,7 @@ Via `.textlintrc`(Recommended)
 Via CLI
 
 ```shell
-textlint --rule jsonlint README.md
+textlint --rule json README.md
 ```
 
 ## Fixble
@@ -42,7 +42,7 @@ Please write your configurations in `.textlintrc`.
 ```json
 {
   "rules": {
-    "jsonlint": {
+    "json": {
       "allowComments": true,
     }
   }
