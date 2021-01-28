@@ -9,7 +9,7 @@ A textlint rule to lint code blocks of JSON in Markdown with ESLint and prettier
 Install with GitHub
 
 ```shell
-npm install https://github.com/chick-p/textlint-rule-json.git
+npm install chick-p/textlint-rule-json
 ```
 
 ## Usage
