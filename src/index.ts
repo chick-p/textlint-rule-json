@@ -65,7 +65,6 @@ const report: TextlintRuleModule<Options> = (context, options = {}) => {
           // Because prettier raises an exception if a code has syntax errors
           const formattedText = prettier.format(code, { parser: "json" });
           if (code !== formattedText) {
-            console.log(node);
             report(
               node,
               new RuleError(`Format error`, {
